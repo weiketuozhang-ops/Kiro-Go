@@ -388,8 +388,8 @@ func parseEventStream(body io.Reader, callback *KiroStreamCallback) error {
 	var inputTokens, outputTokens int
 	var totalCredits float64
 	var currentToolUse *toolUseState
-	var lastAssistantContent string
-	var lastReasoningContent string
+	// _ = var lastAssistantContent_unused_unused_unused stringlastAssistantContent_unused_unused_unused
+	// var lastReasoningContent_unused_unused_unused string
 
 	for {
 		// Prelude: 12 bytes (total_len + headers_len + crc)
@@ -438,14 +438,14 @@ func parseEventStream(body io.Reader, callback *KiroStreamCallback) error {
 		switch eventType {
 		case "assistantResponseEvent":
 			if content, ok := event["content"].(string); ok && content != "" {
-				normalized := normalizeChunk(content, &lastAssistantContent)
+				normalized := content
 				if normalized != "" {
 					callback.OnText(normalized, false)
 				}
 			}
 		case "reasoningContentEvent":
 			if text, ok := event["text"].(string); ok && text != "" {
-				normalized := normalizeChunk(text, &lastReasoningContent)
+				normalized := text
 				if normalized != "" {
 					callback.OnText(normalized, true)
 				}
