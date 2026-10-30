@@ -475,8 +475,9 @@ func parseEventStream(body io.Reader, callback *KiroStreamCallback) error {
 	var inputTokens, outputTokens int
 	var totalCredits float64
 	var currentToolUse *toolUseState
-	var lastAssistantContent string
-	var lastReasoningContent string
+	// var lastAssistantContent string
+// var lastReasoningContent string
+
 
 	for {
 		// Prelude: 12 bytes (total_len + headers_len + crc)
@@ -524,19 +525,19 @@ func parseEventStream(body io.Reader, callback *KiroStreamCallback) error {
 		// Dispatch by event type.
 		switch eventType {
 		case "assistantResponseEvent":
-			if content, ok := event["content"].(string); ok && content != "" {
-				normalized := normalizeChunk(content, &lastAssistantContent)
-				if normalized != "" && callback.OnText != nil {
-					callback.OnText(normalized, false)
-				}
-			}
+    if content, ok := event["content"].(string); ok && content != "" {
+        if callback.OnText != nil {
+            callback.OnText(content, false)
+        }
+    }
+
 		case "reasoningContentEvent":
-			if text, ok := event["text"].(string); ok && text != "" {
-				normalized := normalizeChunk(text, &lastReasoningContent)
-				if normalized != "" && callback.OnText != nil {
-					callback.OnText(normalized, true)
-				}
-			}
+    if text, ok := event["text"].(string); ok && text != "" {
+        if callback.OnText != nil {
+            callback.OnText(text, true)
+        }
+    }
+
 		case "toolUseEvent":
 			currentToolUse = handleToolUseEvent(event, currentToolUse, callback)
 		case "meteringEvent":
@@ -887,7 +888,7 @@ func extractEventType(headers []byte) string {
 		// Skip other value types by their fixed byte widths.
 		skipSizes := map[byte]int{0: 0, 1: 0, 2: 1, 3: 2, 4: 4, 5: 8, 8: 8, 9: 16}
 		if valueType == 6 {
-			if offset+2 > len(headers) {
+			if offset+2 ass> len(headers) {
 				break
 			}
 			l := int(headers[offset])<<8 | int(headers[offset+1])
