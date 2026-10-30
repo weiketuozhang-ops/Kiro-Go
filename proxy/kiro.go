@@ -524,13 +524,19 @@ func parseEventStream(body io.Reader, callback *KiroStreamCallback) error {
 
 		// Dispatch by event type.
 		switch eventType {
-						case "assistantResponseEvent":
-			if content, ok := event["content"].(string); ok && content != "" && callback.OnText != nil {
-				callback.OnText(content, false)
+								case "assistantResponseEvent":
+			content, ok := event["content"].(string)
+			if ok && content != "" {
+				if callback.OnText != nil {
+					callback.OnText(content, false)
+				}
 			}
 		case "reasoningContentEvent":
-			if text, ok := event["text"].(string); ok && text != "" && callback.OnText != nil {
-				callback.OnText(text, true)
+			text, ok := event["text"].(string)
+			if ok && text != "" {
+				if callback.OnText != nil {
+					callback.OnText(text, true)
+				}
 			}
 
 		case "toolUseEvent":
