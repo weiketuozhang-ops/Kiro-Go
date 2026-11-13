@@ -690,7 +690,7 @@ func GetKiroClientConfig() KiroClientConfig {
 	cfgLock.RLock()
 	defer cfgLock.RUnlock()
 
-	kiroVersion := "0.11.107"
+	kiroVersion := "0.15.0"
 	if cfg != nil && cfg.KiroVersion != "" {
 		kiroVersion = cfg.KiroVersion
 	}
