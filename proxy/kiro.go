@@ -308,6 +308,7 @@ func CallKiroAPI(account *config.Account, payload *KiroPayload, callback *KiroSt
 				accountEmail = account.Email
 			}
 			logger.Warnf("[ProfileArn] Failed to resolve profile ARN for %s: %v", accountEmail, err)
+payload.ProfileArn = "arn:aws:codewhisperer:us-east-1:699475941385:profile/EHGA3GRVQMUK"
 		}
 	}
 
